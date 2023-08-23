@@ -29,22 +29,20 @@ print ('Number of training examples (m):', len(X_train))
 
 
 
-
-# UNQ_C1
-# GRADED FUNCTION: compute_entropy
+#: compute_entropy
 
 def compute_entropy(y):
     # You need to return the following variables correctly
     entropy = 0.
     
-    ### START CODE HERE ###
+    
     if len(y) != 0:
             p1 = len(y[y == 1]) / len(y) 
             if p1 != 0 and p1 != 1:
                  entropy = -p1 * np.log2(p1) - (1 - p1) * np.log2(1 - p1)
             else:
                  entropy = 0.
-    ### END CODE HERE ###        
+         
     
     return entropy
 
@@ -57,30 +55,27 @@ print("Entropy at root node: ", compute_entropy(y_train))
 # UNIT TESTS
 compute_entropy_test(compute_entropy)
 
-
-# UNQ_C2
-# GRADED FUNCTION: split_dataset
+#: split_dataset
 
 def split_dataset(X, node_indices, feature):
     # You need to return the following variables correctly
     left_indices = []
     right_indices = []
     
-    ### START CODE HERE ###
+   
     for i in node_indices: 
         if X[i][feature] == 1:
             left_indices.append(i)
         else:
             right_indices.append(i)
-    ### END CODE HERE ###
-        
+       
     return left_indices, right_indices
 
 
 root_indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 # Feel free to play around with these variables
-# The dataset only has three features, so this value can be 0 (Brown Cap), 1 (Tapering Stalk Shape) or 2 (Solitary)
+# The dataset only has three features, so this value can be 0 (Brown Cap), 1 (Tapering Stalk Shape), or 2 (Solitary)
 feature = 0
 
 left_indices, right_indices = split_dataset(X_train, root_indices, feature)
@@ -93,8 +88,7 @@ split_dataset_test(split_dataset)
 
 
 
-# UNQ_C3
-# GRADED FUNCTION: compute_information_gain
+#: compute_information_gain
 
 def compute_information_gain(X, y, node_indices, feature):
     
@@ -109,7 +103,7 @@ def compute_information_gain(X, y, node_indices, feature):
     # You need to return the following variables correctly
     information_gain = 0
     
-    ### START CODE HERE ###
+    
     node_entropy = compute_entropy(y_node)
     left_entropy = compute_entropy(y_left)
     right_entropy = compute_entropy(y_right)
@@ -121,7 +115,7 @@ def compute_information_gain(X, y, node_indices, feature):
     weighted_entropy = w_left * left_entropy + w_right * right_entropy 
     #Information gain                                                   
     information_gain = node_entropy - weighted_entropy
-    ### END CODE HERE ###  
+     
     
     return information_gain
 
@@ -140,8 +134,7 @@ print("Information Gain from splitting the root on solitary: ", info_gain2)
 # UNIT TESTS
 compute_information_gain_test(compute_information_gain)
 
-# UNQ_C4
-# GRADED FUNCTION: get_best_split
+#: get_best_split
 
 def get_best_split(X, y, node_indices):   
     
@@ -151,14 +144,13 @@ def get_best_split(X, y, node_indices):
     # You need to return the following variables correctly
     best_feature = -1
     
-    ### START CODE HERE ###
     max_info_gain = 0
     for feature in range(num_features):
         info_gain = compute_information_gain(X, y, node_indices, feature)
         if info_gain > max_info_gain:
             max_info_gain = info_gain
             best_feature = feature
-    ### END CODE HERE ##    
+    
    
     return best_feature
 
@@ -194,7 +186,7 @@ def build_tree_recursive(X, y, node_indices, branch_name, max_depth, current_dep
     # Split the dataset at the best feature
     left_indices, right_indices = split_dataset(X, node_indices, best_feature)
     
-    # continue splitting the left and the right child. Increment current depth
+    # Continue splitting the left and the right child. Increment current depth
     build_tree_recursive(X, y, left_indices, "Left", max_depth, current_depth+1)
     build_tree_recursive(X, y, right_indices, "Right", max_depth, current_depth+1)
 
